@@ -7,7 +7,7 @@
 	import '../app.css';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { app, session, applyTheme } from '$lib/store.svelte.js';
+	import { app, session, applyTheme, setSystemBars } from '$lib/store.svelte.js';
 	import { markSent } from '$lib/report/draft.js';
 	let { children } = $props();
 
@@ -25,6 +25,8 @@
 		mq.addEventListener('change', h);
 		return () => mq.removeEventListener('change', h);
 	});
+	// Keep the Android system bars in step with the screen (nav present or not, light or dark).
+	$effect(() => { const path = $page.url.pathname; app.theme; queueMicrotask(() => setSystemBars(path)); });
 	// Reports saved offline send themselves when the phone is back online.
 	$effect(() => {
 		const flush = () => app.reports.filter((r) => r.status === 'waiting').forEach((r) => markSent(r));

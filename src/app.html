@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-		<meta name="theme-color" content="#0f4c6b" />
+		<meta name="theme-color" content="#f3f6f8" />
 		<meta name="description" content="Report water problems in Makueni and follow them until they are fixed." />
 		<link rel="manifest" href="%sveltekit.assets%/manifest.webmanifest" />
 		<link rel="icon" type="image/png" href="%sveltekit.assets%/icons/favicon-32.png" />
@@ -14,6 +14,7 @@
 				const t = localStorage.getItem('mm.theme') || 'system';
 				const dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
 				document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+				document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#071c29' : '#f3f6f8');
 			} catch (e) {}
 		</script>
 		%sveltekit.head%

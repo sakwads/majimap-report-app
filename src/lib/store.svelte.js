@@ -56,7 +56,21 @@ export function applyTheme() {
 	const t = app.theme;
 	const dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
 	document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-	document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#071c29' : '#0f4c6b');
+	setSystemBars(location.pathname);
+}
+
+// Android system bars (status bar and gesture/navigation bar) take the page's theme-color in an installed PWA.
+// Rule from the designs: match the bottom nav when the screen has one, the page background when it does not,
+// and the camera's dark surface on the camera.
+const NAV_ROUTES = ['/home', '/reports', '/nearby', '/account', '/sent'];
+export function setSystemBars(path) {
+	if (!browser) return;
+	const css = getComputedStyle(document.documentElement);
+	const token = path === '/report' ? null : NAV_ROUTES.some((r) => path.startsWith(r)) ? '--surface-raised' : '--surface-base';
+	const colour = token ? css.getPropertyValue(token).trim() : '#0b1318';
+	let meta = document.querySelector('meta[name="theme-color"]');
+	if (!meta) { meta = document.createElement('meta'); meta.name = 'theme-color'; document.head.appendChild(meta); }
+	meta.setAttribute('content', colour);
 }
 
 export function signOut() {

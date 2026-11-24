@@ -30,7 +30,7 @@ Camera, microphone, location, service worker and fingerprint need HTTPS (or loca
 ## Deploy on Railway from GitHub
 1. Push this folder to a GitHub repository.
 2. In Railway: **New project → Deploy from GitHub repo**, then pick the repository.
-3. Railway reads `railway.json`: it builds with `npm ci && npm run build` and starts with `npm start`. It sets `PORT` for you.
+3. Railway reads `railway.json`: Nixpacks installs the packages, `npm run build` builds the app, and it starts with `npm start`. It sets `PORT` for you.
 4. Under **Settings → Networking**, choose **Generate domain** to get an HTTPS address, then open it on your phone and use *Add to Home screen*.
 
 ## Structure
@@ -41,3 +41,15 @@ Camera, microphone, location, service worker and fingerprint need HTTPS (or loca
 - `src/routes/(full)`: full-screen flows (sign in, unlock, report a problem).
 - `src/routes/(app)`: screens with the bottom nav (Home, Reports, Nearby water, Account).
 - `src/service-worker.js`: offline cache.
+
+## Changelog
+Newest first. Every change to the app gets a dated line here.
+
+### 25 Nov 2026
+- Android system bars (status bar and gesture bar) now follow the screen: they match the bottom nav on screens that have it, the page background on screens without it, and the camera's dark surface on the camera. They update with light and dark mode. Manifest `theme_color` changed from brand blue to the page background.
+
+### 24 Nov 2026
+- Railway: `buildCommand` is now `npm run build`. Nixpacks already installs packages, and a second `npm ci` failed on its locked cache.
+- Fixed: after creating a PIN the app opened the unlock screen instead of Home.
+- Fixed: Send report returned to the camera instead of the sending screen.
+- First release of the resident PWA: sign in with phone and SMS code, PIN and fingerprint or Face ID unlock, Forgot PIN, Home, Report a problem (camera, location, check, already reported, voice note, send, sending, slow, failed, saved offline), Reports and report details with reviewer messages and replies, Nearby water map and list, water point details, Account, and Appearance (phone setting, light, dark). Works offline; static data for Makueni.
